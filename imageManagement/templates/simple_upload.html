@@ -1,0 +1,239 @@
+
+<!-- {% load static %} -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<script type='text/javaScript'>
+
+    // enter your port number after locahost on which the server is running
+function compressImage() {
+    var formData = new FormData();
+    var image_file = document.getElementById('myfile').files[0];
+    var image_url = document.getElementById('file_url').value;
+    formData.append('image_file', image_file);
+    formData.append('image_url', image_url);
+
+    $.ajax({
+        data: formData,
+        type: 'post',
+        url: '',
+        headers: {
+            'Authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlVWeEZ4In0.Urid3DDoteXGrQrbT43NVSxIhv09PlAMswstnN_4G8U'
+
+        },
+        processData: false,
+        contentType: false,
+        success: function (data) {
+
+            alert(data);
+           imageData=JSON.parse(data);
+            alert(imageData.image_url);
+            alert(imageData.image);
+            $('#img').attr("src",imageData.image);
+            $('#img_url').attr("src",imageData.image_url);
+
+        }
+    });
+}
+function patchImage() {
+
+    var formData = new FormData();
+    var image_file = document.getElementById('patch_file').files[0];
+    var image_name = document.getElementById('patch_image').value;
+    formData.append('image_file', image_file);
+{#    formData.append('csrfmiddlewaretoken','SHTtiybVSsPxVwjjt3I11X3Ao5Jd4A9R6i4RPDCcK1pbTjZUfsvLscCkOWOtrIdi');#}
+
+    alert(image_name);
+    alert(image_file);
+    $.ajax({
+        data: formData,
+        type: 'post',
+        url: 'http://localhost:8060/imageManagement/patch/'+image_name,
+        headers: {
+            'Authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlVWeEZ4In0.Urid3DDoteXGrQrbT43NVSxIhv09PlAMswstnN_4G8U'
+
+        },
+        processData: false,
+        contentType: false,
+        success: function (data) {
+
+            imageData=JSON.parse(data);
+            //alert("1");
+            alert(data);
+            $('#patch_img').attr("src",imageData.image_url);
+
+        }
+       
+
+       
+    });
+}
+function getImages() {
+{#  var formData=new FormData();#}
+{#  var image_file=document.getElementById('myfile').files[0];#}
+{#  var image_url = document.getElementById('file_url').value;#}
+{#  formData.append('image_file',image_file);#}
+{#  formData.append('image_url',image_url);#}
+
+    $.ajax({
+        data:'',
+        type:'get',
+        url: 'http://localhost:8060/imageManagement/getImages/',
+        headers :{
+            'Authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlVWeEZ4In0.Urid3DDoteXGrQrbT43NVSxIhv09PlAMswstnN_4G8U'
+
+        },
+        processData: false,
+        contentType: false,
+        success: function(data){
+
+
+            imageData=JSON.parse(data);
+
+            //alert(data)
+          alert(imageData.images);
+          alert(imageData.image);
+          alert(imageData.error);
+            for(var i=0; i<imageData.images.length;i++)
+            {
+                var img = $('<img />', {
+                    id: 'imgid'+i,
+                    src:imageData.images[i],
+                    width:40,
+                    height:40
+                });
+
+                img.appendTo($('#div'))
+
+            }
+
+
+        }
+    });
+
+
+}
+function getImage() {
+
+var image_name = document.getElementById('image_name').value;
+    $.ajax({
+        data:'',
+        type:'get',
+        url: 'http://localhost:8060/imageManagement/getImage/'+image_name,
+        headers :{
+            'Authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlVWeEZ4In0.Urid3DDoteXGrQrbT43NVSxIhv09PlAMswstnN_4G8U'
+
+        },
+        processData: false,
+        contentType: false,
+        success: function(data){
+            imageData=JSON.parse(data);
+            alert(data);
+          alert(imageData.images);
+          alert(imageData.image);
+          alert(imageData.error);
+          for(var i=0; i<imageData.image.length;i++)
+            {
+                var img = $('<img />', {
+                    id: 'imgid'+i,
+                    src:imageData.image[i],
+                    width:40,
+                    height:40
+                });
+
+                img.appendTo($('#get'))
+
+            }
+{#          $('#getimg').attr("src",imageData.image);#}
+        }
+    });
+
+
+}
+
+function deleteImage() {
+
+var delete_image_name = document.getElementById('delete_image_name').value;
+    $.ajax({
+        data:'',
+        type:'get',
+        url: 'http://localhost:8060/imageManagement/delete/'+delete_image_name,
+        headers :{
+            'Authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlVWeEZ4In0.Urid3DDoteXGrQrbT43NVSxIhv09PlAMswstnN_4G8U'
+
+        },
+        processData: false,
+        contentType: false,
+        success: function(data){
+            imageData=JSON.parse(data);
+            alert(data)
+
+        }
+    });
+
+
+}
+function generateToken() {
+
+    $.ajax({
+        data:'',
+        type:'get',
+        url: 'http://localhost:8060/imageManagement/generateToken/',
+
+        processData: false,
+        contentType: false,
+        success: function(data){
+            imageData=JSON.parse(data);
+            alert(data)
+
+        }
+    });
+
+
+}
+
+</script>
+
+{% block content %}
+
+
+    <input type="file" name="myfile" id="myfile"><br>
+    <input type="text" name="file_url" id="file_url" placeholder="image url"><br>
+    <button type="submit" onclick="compressImage()">Upload</button>
+    <img src="" alt="img" id="img" class="img-responsive img-rounded" height="42" width="42"	>
+    <img src="" alt="img" id="img_url" class="img-responsive img-rounded" height="42" width="42"	>
+    </br>
+    </br>
+    <button type="submit" onclick="getImages()">GET ALL IMAGES</button>
+    <div id="div">
+
+    </div>
+    </br>
+    </br>
+    <input type="text" name="image_name" id="image_name" placeholder="image Name"><br>
+    <button type="submit" onclick="getImage()">GET IMAGE</button>
+    <div id="get"></div>
+{#    <img src="" alt="getimg" id="getimg" class="img-responsive img-rounded" height="42" width="42">#}
+ <!-- <button type="submit" method="get">get</button> -->
+
+
+    </br>
+    </br>
+    <input type="text" name="delete_image_name" id="delete_image_name" placeholder="image Name"><br>
+    <button type="submit" onclick="deleteImage()">Delete IMAGE</button>
+
+    </br>
+    </br>
+
+   
+    {% csrf_token %}
+    <input type="file" name="patch_file" id="patch_file" value="choose image"><br>
+    <input type="text" name="patch_image" id="patch_image" placeholder="image to be patched"><br>
+    <button type="submit" onclick="patchImage()">Patch</button>
+    <img src=""  id="patch_img" class="img-responsive img-rounded" height="42" width="42"	>
+
+    </br>
+
+    </br>
+    <button type="submit" onclick="generateToken()">generate Token</button>
+
+  
+{% endblock %}
