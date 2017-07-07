@@ -1,0 +1,1 @@
+web: gunicorn doselect.wsgi --log-file -
